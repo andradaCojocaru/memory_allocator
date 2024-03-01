@@ -1,0 +1,41 @@
+# 332CA Andrada-Ioana Cojocaru - TEMA 2 SO
+
+Am declarat in cadrul helpers.h urmatoarele variabile:
+-init pentru a crea memoria alocata - in partea stanga am memoria alocata
+pe heap, iar in dreapta cea cu mmap
+-final_heap pentru a sti daca este prima creere
+
+-------------------------------------------------------------------------------
+
+-> os_malloc 
+- am aliniat fiecare size la 8 octeti
+- am verificat ca bucatile de memoria mai mari decat MMAP_THRESHOLD
+sa fie alocate cu mmap
+- daca e prima alocare caut adresa curenta folosind sbrk(0) apoi aloc memoria
+dorita
+- in cazul in care mai am date caut best block, daca nu  aloc altul si de 
+asemenea fac split in cazul in care e posibil
+
+-> os_free 
+- verific ce fel de memorie a fost alocata si o dezaloc sau ii schimb
+statusul dupa caz
+- daca pointer e NULL nu returnez si nu fac nimic
+
+-> os_calloc
+- ma folosesc de la implementarea de la malloc la care mai adaug initializarea
+memoriei cu 0
+- daca size sau nmemb sunt 0 sau pointerul creat cu malloc sunt nule return 
+NULL
+
+-> os_realloc
+- daca size e 0 stergem blocul creat
+- daca ptr e null atunci doar cream un nou bloc
+- daca noul size este mai mic decat cel vechi atunci putem sa mutam memoria in el
+si facem split
+- expandam blocurile daca e posibil
+- la final mutam datele in noul pointer si stergem memoria creata precedent
+
+-------------------------------------------------------------------------------
+Inspiratie:
+- https://danluu.com/malloc-tutorial/
+- chat gpt sugestii implementare
